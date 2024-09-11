@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BeehiveManagementSystem.MainPage">
+
+    <ScrollView>
+        <Grid Margin="20" ColumnSpacing="20" MinimumHeightRequest="400">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+
+            <Label Text="Job Assignments" FontSize="Large" Grid.Row="0" Grid.Column="0"/>
+            
+            <Border Grid.Row="1" Grid.Column="0" Padding="10" Margin="0,0,0,20">
+                <VerticalStackLayout>
+                    <Label Text="Bee Jobs" FontSize="Medium" />
+                    <Picker SemanticProperties.Hint="Select a job" FontSize="Medium" x:Name="JobPicker" Margin="0, 0, 0, 20"/>
+                    <Button Clicked="AssignJobButton_Clicked" SemanticProperties.Hint="Assign the job to a worker bee" Text="Assign This Job to a Bee" FontSize="Medium" x:Name="AssignJobButton"/>
+                </VerticalStackLayout>
+            </Border>
+            
+            <Button Text="Work the Next Shift" Clicked="WorkShiftButton_Clicked" Grid.Row="2" FontSize="Large" x:Name="WorkShiftButton" SemanticProperties.Hint="Makes the bees work the next shift" />
+            <Button Clicked="OutOfHoneyButton_Clicked" IsVisible="False" BackgroundColor="Red" Grid.Row="2" FontSize="Large" x:Name="OutOfHoneyButton" Text="The Hive is Out of Honey" SemanticProperties.Hint="Restarts the Beehive Management System"/>
+
+            <Label Text="Queen's Report" FontSize="Large" Grid.Column="1" Grid.Row="0"/>
+            <Label Grid.Column="1" 
+                   Grid.Row="1" 
+                   Grid.RowSpan="2" 
+                   BackgroundColor="Black" 
+                   TextColor="Yellow" 
+                   Padding="10" 
+                   VerticalOptions="FillAndExpand" 
+                   x:Name="StatusReport"
+                   FontSize="Small"/>
+
+        </Grid>
+    </ScrollView>
+
+</ContentPage>
