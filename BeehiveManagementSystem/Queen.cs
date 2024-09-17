@@ -1,11 +1,20 @@
-﻿namespace BeehiveManagementSystem
+﻿using System.ComponentModel;
+
+namespace BeehiveManagementSystem
 {
-    internal class Queen: Bee
+    internal class Queen: Bee, INotifyPropertyChanged
     {
 
-        private Bee[] _workers = new Bee[0];
+        private IWorker[] _workers = new IWorker[0];
         private decimal _unassignedWorkers = 3M;
         private decimal _eggs = 0M;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public bool HiveIsRunning { get; private set; } = true;
+        public bool OutOfHoney { get { return !HiveIsRunning; } }
+
+
         public string StatusReport { get; private set; } = "";
 
         protected override decimal CostPerShift => Constants.QUEEN_COST_PER_SHIFT;
@@ -19,12 +28,17 @@
             AssignBee("Honey Manufacturer");
         }
 
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         public override bool WorkTheNextShift()
         {
             _eggs += Constants.EGGS_PER_SHIFT;
 
             bool allWorkersCompletedShifts = true;
-            foreach (Bee worker in _workers)
+            foreach (IWorker worker in _workers)
             {
                 if (!worker.WorkTheNextShift())
                 {
@@ -35,7 +49,10 @@
             HoneyVault.ConsumeHoney(Constants.HONEY_PER_UNASSIGNED_WORKER * _unassignedWorkers);
 
             bool shiftWorked = base.WorkTheNextShift();
+            if (!shiftWorked) HiveIsRunning = false;
             UpdateStatusReport(allWorkersCompletedShifts);
+
+
             return shiftWorked;
         }
 
@@ -65,7 +82,7 @@
             }
         }
 
-        private void AddWorker(Bee worker)
+        private void AddWorker(IWorker worker)
         {
             if(_unassignedWorkers >= 1){
                 _unassignedWorkers--;
@@ -82,12 +99,17 @@
                 $"{WorkerStatus("Egg Care")}\nTOTAL WORKERS: {_workers.Length}";
 
             if (!allWorkersCompletedShifts) StatusReport += "\nWARNING: NOT ALL WORKERS WERE ABLE TO COMPLETE THEIR SHIFTS";
+            OnPropertyChanged(nameof(StatusReport));
+            OnPropertyChanged(nameof(CanAssignWorkers));
+            OnPropertyChanged(nameof(HiveIsRunning));
+            OnPropertyChanged(nameof(OutOfHoney));
+
         }
 
         private string WorkerStatus(string jobType)
         {
             int count = 0;
-            foreach (Bee worker in _workers) {
+            foreach (IWorker worker in _workers) {
                 if (worker.Job == jobType) count++;
             }
             string s = "s";

@@ -15,8 +15,9 @@
             };
             JobPicker.SelectedIndex = 0;
 
-            UpdateStatusAndEnableAssignButton();
+            //UpdateStatusAndEnableAssignButton();
             Dispatcher.StartTimer(TimeSpan.FromSeconds(1.5), TimerTick);
+            BindingContext = _queen;
         }
 
         private bool TimerTick()
@@ -29,26 +30,26 @@
             return true;
         }
 
-        private void UpdateStatusAndEnableAssignButton()
-        {
-            StatusReport.Text = _queen.StatusReport;
-            AssignJobButton.IsEnabled = (_queen.CanAssignWorkers);
-        }
+        //private void UpdateStatusAndEnableAssignButton()
+        //{
+        //    StatusReport.Text = _queen.StatusReport;
+        //    AssignJobButton.IsEnabled = (_queen.CanAssignWorkers);
+        //}
 
         private void AssignJobButton_Clicked(object sender, EventArgs e)
         {
             _queen.AssignBee(JobPicker.SelectedItem.ToString());
-            UpdateStatusAndEnableAssignButton();
+            //UpdateStatusAndEnableAssignButton();
         }
 
         private void WorkShiftButton_Clicked(object sender, EventArgs e)
         {
             if (!_queen.WorkTheNextShift()){
-                WorkShiftButton.IsVisible = false;
-                OutOfHoneyButton.IsVisible = true;
+                //WorkShiftButton.IsVisible = false;
+                //OutOfHoneyButton.IsVisible = true;
                 SemanticScreenReader.Default.Announce(OutOfHoneyButton.Text);
             }
-            UpdateStatusAndEnableAssignButton();
+            //UpdateStatusAndEnableAssignButton();
             SemanticScreenReader.Announce(_queen.StatusReport);
         }
 
@@ -56,9 +57,10 @@
         {
             HoneyVault.Reset();
             _queen = new();
-            WorkShiftButton.IsVisible = true;
-            OutOfHoneyButton.IsVisible = false;
-            UpdateStatusAndEnableAssignButton();
+            BindingContext = _queen;
+            //WorkShiftButton.IsVisible = true;
+            //OutOfHoneyButton.IsVisible = false;
+            //UpdateStatusAndEnableAssignButton();
             Dispatcher.StartTimer(TimeSpan.FromSeconds(1.5), TimerTick);
 
         }

@@ -1,8 +1,8 @@
 ﻿namespace BeehiveManagementSystem
 {
-    internal abstract class Bee(string job)
+    internal abstract class Bee(string job): IWorker
     {
-        public string Job { get; private set; } = job;
+        public string Job { get; } = job;
 
         protected abstract decimal CostPerShift { get; }
 

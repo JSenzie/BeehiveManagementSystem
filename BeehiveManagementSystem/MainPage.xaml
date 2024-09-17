@@ -22,12 +22,12 @@
                 <VerticalStackLayout>
                     <Label Text="Bee Jobs" FontSize="Medium" />
                     <Picker SemanticProperties.Hint="Select a job" FontSize="Medium" x:Name="JobPicker" Margin="0, 0, 0, 20"/>
-                    <Button Clicked="AssignJobButton_Clicked" SemanticProperties.Hint="Assign the job to a worker bee" Text="Assign This Job to a Bee" FontSize="Medium" x:Name="AssignJobButton"/>
+                    <Button IsEnabled="{Binding CanAssignWorkers}" Clicked="AssignJobButton_Clicked" SemanticProperties.Hint="Assign the job to a worker bee" Text="Assign This Job to a Bee" FontSize="Medium" x:Name="AssignJobButton"/>
                 </VerticalStackLayout>
             </Border>
             
-            <Button Text="Work the Next Shift" Clicked="WorkShiftButton_Clicked" Grid.Row="2" FontSize="Large" x:Name="WorkShiftButton" SemanticProperties.Hint="Makes the bees work the next shift" />
-            <Button Clicked="OutOfHoneyButton_Clicked" IsVisible="False" BackgroundColor="Red" Grid.Row="2" FontSize="Large" x:Name="OutOfHoneyButton" Text="The Hive is Out of Honey" SemanticProperties.Hint="Restarts the Beehive Management System"/>
+            <Button Text="Work the Next Shift" IsVisible="{Binding HiveIsRunning}" Clicked="WorkShiftButton_Clicked" Grid.Row="2" FontSize="Large" x:Name="WorkShiftButton" SemanticProperties.Hint="Makes the bees work the next shift" />
+            <Button Clicked="OutOfHoneyButton_Clicked" IsVisible="{Binding OutOfHoney}" BackgroundColor="Red" Grid.Row="2" FontSize="Large" x:Name="OutOfHoneyButton" Text="The Hive is Out of Honey" SemanticProperties.Hint="Restarts the Beehive Management System"/>
 
             <Label Text="Queen's Report" FontSize="Large" Grid.Column="1" Grid.Row="0"/>
             <Label Grid.Column="1" 
@@ -38,7 +38,9 @@
                    Padding="10" 
                    VerticalOptions="FillAndExpand" 
                    x:Name="StatusReport"
-                   FontSize="Small"/>
+                   FontSize="Small"
+                   Text="{Binding StatusReport}"
+                   />
 
         </Grid>
     </ScrollView>
